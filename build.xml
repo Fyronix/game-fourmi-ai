@@ -1,0 +1,70 @@
+<project name="FourmIR2000" default="compile" basedir=".">
+  <description>FourmIR2000</description>
+  <target name="init">
+    <property name="build.dir" value="classes"/>
+    <property name="src.dir" value="src"/>
+    <property name="main.class" value="dev.lounge-lizard.lounge-lizard.fourmIR2000.main"/>
+    <property name="dist.dir" value="bin"/>
+    <property name="lib.dir" value="lib"/>
+  	<property name="doc.dir" value="docs/api"/>
+  	<property name="resources.dir" value="resources"/>
+    <property name="dev.name" value="LEGRAND-JOLLY"/>
+    <property name="EXEC" value="FourmIR2000.jar"/>
+  	<property name="LIBRARY" value="lawrence.jar"/>
+    <property name="manifest.main.class" value="dev.lounge-lizard.fourmIR2000.Main"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <mkdir dir="${build.dir}/${resources.dir}"/>
+  	<copy todir="${build.dir}/${resources.dir}" overwrite="true">
+  		<fileset dir="${src.dir}/resources"></fileset>
+  	</copy>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" classpath="${lib.dir}/${LIBRARY}" debug="true" source="1.5" nowarn="true">
+      <compilerarg value="-Xlint:deprecation"/>
+      <compilerarg value="-g:none"/>
+      <!--<compilerarg value="-Xlint:unchecked"/>-->
+    </javac>
+  </target>
+
+  <target name="run" depends="dist">
+    <java jar="${dist.dir}/${EXEC}" classpath="${lib.dir}/${LIBRARY}" fork="true" maxmemory="128m" />
+  </target>
+	
+  <target name="clean" depends="init">
+      <delete file="${dist.dir}/${EXEC}"/>
+   <delete >
+      <fileset dir="${build.dir}"/>
+    </delete>
+  </target>
+	
+  <target name="dist" depends="compile">
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${dist.dir}/${EXEC}" basedir="${build.dir}" filesetmanifest="merge">
+      <manifest>
+        <attribute name="Created-By" value="${dev.name}"/>
+        <attribute name="Main-Class" value="${manifest.main.class}"/>
+        <attribute name="Class-Path" value="../${lib.dir}/${LIBRARY}"/>
+	  </manifest> 
+    </jar>
+  </target>
+  <target name="javadoc">
+    <javadoc
+      access="private" 
+      author="true" 
+      classpath="lib/lawrence.jar" 
+      destdir="docs/api" 
+      doctitle="Fourm'IR 2000" 
+      nodeprecated="false" 
+      nodeprecatedlist="false" 
+      noindex="false" 
+      nonavbar="false" 
+      notree="false" packagenames="dev.lounge-lizard.fourmIR2000.insect.behaviors,dev.lounge-lizard.fourmIR2000.ai,dev.lounge-lizard.fourmIR2000.util,dev.lounge-lizard.fourmIR2000.world,dev.lounge-lizard.fourmIR2000.pictures,dev.lounge-lizard.fourmIR2000.insect,dev.lounge-lizard.fourmIR2000,dev.lounge-lizard.fourmIR2000.frame"
+      source="1.5" 
+      sourcepath="src" 
+      splitindex="true" 
+      use="true" 
+      version="true"
+    />
+</target>
+ 
+</project>
